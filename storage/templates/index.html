@@ -1,0 +1,149 @@
+{% extends 'base.html' %}
+
+{% block content %}
+ 
+
+
+   
+<div class="container m-5">
+    <div class="row ">
+        <div class="col-12">
+            <img src="/media/images/AdobeStock_248929619_Preview.jpeg" alt="" 
+                 class="img-fluid" style="width: 100%; height: 33vh; object-fit: cover;"> 
+        </div>
+        </div>
+    <div class="row m-3 ">
+        <div class="col d-flex justify-content-between ">
+            <button class="btn " style="background-color: 	rgb(208,199,182); "  onclick="addIngredients()">اضف منتج جديد </button>
+            <a class="btn "  style="background-color: 	rgb(208,199,182); " href="{% url 'purchase' %}"> اضافه مشتريات جديده</a>
+            <a class="btn"  style="background-color: 	rgb(208,199,182); "  href="{% url 'createRecipe' %}">اضف طبق</a>
+
+        </div>
+    </div>
+    {% if listToBuy  %}  
+    <div class="alert alert-danger mt-5" role="alert">
+    {% for m in listToBuy %}
+   <div>{{m}}</div>
+    {% endfor %} </div>
+    {% endif %}     
+ 
+    {% if almostDone %}      
+    <div class="alert alert-warning mt-5" role="alert">
+        {% for m in almostDone %}
+        <div>{{m}}</div>
+         {% endfor %}    </div>     
+     {% endif %}     
+    <div class="row mt-4">
+        <div class="col">
+            <div class="card "style="background-img: media/images/bkg.jpg " >
+                    <h4 class="text-center p-1"  style="background-color: 	rgb(245,242,236); ">المخزون</h4>
+           <div class="card-body">
+            <table class="table">
+                <thead>
+                    <td>  المنتج</td>
+                    <td> الكميه </td>
+                </thead>
+                <tbody>
+             {% for item in Inventory  %}
+                <tr>
+                    <td>{{item.IngredientID}}</td>
+                    <td>{{item.Quantity}}</td>
+                </tr>
+            
+            {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+                
+        </div>
+    </div>
+ 
+    
+    
+   
+
+    <div class="row mt-4">
+        <div class="col">
+            <div class="card ">
+                    <h4 class="text-center p-1"  style="background-color: 	rgb(245,242,236); " >المشتريات</h4>
+           <div class="card-body">
+            <table class="table">
+                <thead>
+                    <td>  المنتج</td>
+                    <td> الكميه </td>
+                    <td>تاريخ الشراء</td>
+                    <td>تاريخ الانهاء</td>
+                </thead>
+                <tbody>
+             {% for item in Purchases  %}
+                <tr>
+                    <td>{{item.IngredientID}}</td>
+                    <td>{{item.Quantity}}</td>
+                    <td>{{item.PurchaseDate}}</td>
+                    <td>{{item.ExpiryDate}}</td>
+
+                    
+                </tr>
+            
+            {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+                
+        </div>
+    </div>
+</div>
+
+
+
+<!--add Ingredients modal-->
+<div class="modal fade" id="addIngredients" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header d-flex justify-content-between align-items-center" style="background-color: rgb(170,193,181);">
+                <h5 class="modal-title text-white" id="exampleModalLabel" style="flex-grow: 1; text-align: center;">اضف منتج</h5>
+                <div></div> <!-- This empty div ensures the title stays centered -->
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <div class="row">
+                        <div class="col">
+                            <form method="post" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                {{form.errors}}
+                                <div class="mb-3">
+                                    <label for="name">{{ form.Ingredients.name.label }}</label>
+                                    {{ form.Ingredients.name }}
+                                </div>
+                                <div class="mb-3">
+                                    <label for="Category">{{ form.Ingredients.Category.label }}</label>
+                                    {{ form.Ingredients.Category }}
+                                </div>
+                                <div class="mb-3">
+                                    <label for="ingredients_size">{{ form.Ingredients.ingredients_size.label }}</label>
+                                    {{ form.Ingredients.ingredients_size }}
+                                </div>
+                                <div class="mb-3">
+                                    <label for="UnitOfMeasure">{{ form.Ingredients.UnitOfMeasure.label }}</label>
+                                    {{ form.Ingredients.UnitOfMeasure }}
+                                </div>
+                               
+                                <button type="submit" class="btn text-white" style="background-color: rgb(170,193,181);">حفظ</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock content %}
+    
+    

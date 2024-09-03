@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="containe mt-5 p-4">
+    <div class="card ">
+                    <div class="card-header align-items-center" style="background-color: rgba(127, 23, 169, 0.2);">
+                        <h5 style="text-align: center;">اضف وصفة</h5>
+                    </div>
+                    <div class="card-body ">
+                        <div class="container">
+                            <div class="row ">
+                                <div class="col position-relative">
+                                    {{form.Recipes.errors}}
+                                    <form action=""  method="post" enctype="multipart/form-data">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="RecipeID" value="{{form.Recipes.RecipeID}}">
+                                        {{form.Recipes.necipes_name.label}}
+                                        {{form.Recipes.necipes_name}} 
+                                        {{form.Recipes.Description.label}}                                     
+                                        {{form.Recipes.Description}} 
+                                        <div class="m-2">
+                                            {{form.Recipes.img.label}}                                     
+                                            {{form.Recipes.img}}                                         
+                                           
+                                        </div>
+                                        
+                                        <div class="text-start mt-5" >
+                                         
+                                           
+                                            <button type="submit" class="btn "  style="background-color: rgba(127, 23, 169, 0.2);">التالي <i class="bi bi-arrow-left"></i>
+                                            </button>
+                                        </div>
+
+                                    
+                            
+                                    </form>
+                     
+                                </div>
+                            </div>
+                        </div>
+                  
+        </div> 
+    </div>
+</div>
+<script>
+    const addMorebtn = document.getElementById('add-more')
+    addMorebtn.addEventListener('click',)
+    function addnewform(event){
+        if(event){
+            event.preventDefault()
+        }
+        const emptyForm = document.getElementById('add-more')
+        emptyForm.setAttribute('class','ingradent-form')
+
+    }
+</script>
+{% endblock content %}
+    
+
+

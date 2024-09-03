@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="containe mt-5 p-4">
+    <div class="card ">
+                    <div class="card-header align-items-center" style="background-color: rgba(127, 23, 169, 0.2);">
+                        <h5 style="flex-grow: 1; text-align: center;">  اضف مكونات {{Recipenme}}</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col">
+                                    <form action="" method="post" enctype="multipart/form-data">
+                                        {% csrf_token %}
+                                        {{ formset.management_form }}
+                                                
+                                                <table>
+                                                    <thead>
+                                                        <td class="p-2">المكون</td>
+                                                        <td class="p-2">الكمية</td>
+                                                    </thead>
+                                                    
+                                                    {% for form in formset %}   
+                                                    {{form.errors}}  
+                                                    <tr>
+                                                    <td class="p-2">{{ form.IngredientID }}</td>
+                                                    <td class="p-2">{{ form.Quantity }}</td>
+                                                    </tr>
+                                                    {% endfor %}
+
+                                                </table>
+                                         <div class="text-start">
+                                            <button type="submit" class="btn btn-success text-end">حفظ</button>
+
+                                         </div>       
+                                    </form>
+
+                                </div>
+                            </div>
+                        </div>
+                  
+        </div> 
+    </div>
+</div>
+<script>
+    const addMorebtn = document.getElementById('add-more')
+    addMorebtn.addEventListener('click',)
+    function addnewform(event){
+        if(event){
+            event.preventDefault()
+        }
+        const emptyForm = document.getElementById('add-more')
+        emptyForm.setAttribute('class','ingradent-form')
+
+    }
+</script>
+{% endblock content %}

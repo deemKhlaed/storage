@@ -1,0 +1,39 @@
+{% extends 'base.html' %} 
+ 
+{% block content %} 
+
+<div class="card mt-5">
+   <div class="card-body bg-custom d-flex justify-content-center">
+       <div class="mt-5">
+           <form method="post" class="form-group">
+            {% csrf_token %}
+            <div class="alert alert-danger " role="alert">
+           <div>{{form.errors}}</div>
+            </div>
+          
+           
+            <label for="username" style="color:  rgb(170,193,181);">{{form.username.label}}</label>
+            <p></p>
+            {{form.username}}
+            <p></p>
+            <label for="email" style="color:  rgb(170,193,181);">{{form.email.label}}</label>
+            <p></p>
+            {{form.email}}
+            <p></p>
+            <label for="password" style="color:  rgb(170,193,181);">{{form.password1.label}}</label>
+            <p></p>
+            {{form.password1}}
+            <p></p>
+            <label for="password" style="color:  rgb(170,193,181);">{{form.password2.label}}</label>
+            <p></p>
+            {{form.password2}}
+            
+            <p></p>
+
+               <button class="btn mt-3" type="submit" style="background-color:  rgb(170,193,181); color:  rgb(245,242,236); ">تسجيل</button>
+           </form>
+       </div>
+   </div>
+</div>
+
+{% endblock %}

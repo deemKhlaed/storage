@@ -1,0 +1,87 @@
+{% extends 'base.html' %} 
+ 
+{% block content %} 
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-12">
+            <img src="/media/images/AdobeStock_248929619_Preview.jpeg" alt="" 
+                 class="img-fluid" style="width: 100%; height: 33vh; object-fit: cover;"> 
+        </div>
+        <div class="row justify-content-center " >
+                <div class="col-12" style="background-color: rgba(0, 0, 0, 0.05);">
+                    <h4 class="text-center text-secondary"  >
+                    نظام مخزوني هو الحل الأمثل لتتبع الأغذية والمنتجات في مطعمك. بفضل هذا النظام، ستتمكن من إدارة المخزون بكفاءة وفعالية، مما يساعدك على تتبع المواد الغذائية والمكونات المستخدمة في المطبخ، ويضمن لك توافر المواد المطلوبة في كل وقت وتقليل الهدر بشكل كبير.
+                    </h4>
+                </div>
+        </div>
+        <div class="row m-4">
+            <div class="col text-start">
+                <button class="btn text-white" style="background-color: 	rgb(208,199,182); "  onclick="showlogin()">سجل معنا <i class="bi bi-arrow-left"></i></button> 
+            </div>
+        </div>
+       
+    </div>
+   
+   
+</div>
+<div class="modal fade  {% if show_login_modal %}show{% endif %}" id="login" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header d-flex justify-content-between align-items-center" style="background-color: rgb(170,193,181);">
+                <h5 class="modal-title text-white" id="exampleModalLabel" style="flex-grow: 1; text-align: center;">تسجيل الدخول</h5>
+                <div></div> 
+        
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
+            </div>
+            <div class="modal-body">
+                <div class="card ">
+                    <div class="card-body bg-custom d-flex justify-content-center"> 
+                        <div class="mt-1">
+                            <div class="row">
+                                <div class="col">
+                                    <form method="post" class="form-group">
+                                        {% csrf_token %}
+                                        {% if form.errors %}
+                                        <div class="alert-sm alert-danger" role="alert">
+                                            {{form.errors}}
+                                          </div> 
+                                        {% endif %}
+                                        <label for="username" style="color:  rgb(170,193,181);">{{form.username.label}}</label>
+                                        <p></p>
+                                        {{form.username}}
+                                        <p></p>
+                                        <label for="password" style="color:  rgb(170,193,181);">{{form.password.label}}</label>
+                                        <p></p>
+                                        {{form.password}}
+                                        <div class="pt-2">
+                                            <strong style="color: rgb(208,199,182);">ليس لديك حساب؟<a href="{% url 'auth_register' %}" style="color: rgb(245,242,236);">سجل هنا</a></strong> <!-- Changed text color to white -->
+                                        </div>
+                
+                                        <button class="btn mt-3" type="submit" style="background-color: rgb(170,193,181);">تسجيل الدخول</button>
+                                    </form>
+                                </div>
+                            </div>
+                            
+                            
+                        </div>
+                    </div>
+                 </div> 
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if show_login_modal %}
+<script>
+    $(document).ready(function(){
+        $('#login').modal('show');
+    });
+</script>
+{% endif %}
+<script>
+    function showlogin(){
+    $('#login').modal('show')
+}
+</script>
+{% endblock content %}

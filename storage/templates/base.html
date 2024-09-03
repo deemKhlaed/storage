@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product</title>
+    {% load bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    {% load static %}
+    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+
+</head>
+
+<body>
+    <header style="background-color: rgb(170,193,181);">
+        <nav class="navbar navbar-expand-lg navbar-light bg-body-tertiary">
+            <div class="container-fluid">
+
+              <a class="navbar-brand text-white" href="{% url 'index' %}">مخزوني</a>
+              <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
+                <ul class="navbar-nav">
+                  {% if request.user.is_authenticated %}
+                  <li class="nav-item">
+                    <a class="nav-link text-white" aria-current="page" href="{% url 'chart' %}">الاحصائيات</a>
+                  </li>
+                  {% endif %}
+                  {% if request.user.is_authenticated %}
+                  <li class="nav-item">
+                    <a class="nav-link text-white" href="{% url 'recipes' %}">أطباقي</a>
+                  </li>  
+                  {% endif %}
+
+                </ul>
+                <ul class="navbar-nav">
+                  <li class="nav-item">
+                    <a class="nav-link text-white text-start" href="#">{{request.session.name}}</a>
+                  </li>
+                  {% if request.user.is_authenticated %}
+                  <li class="nav-item">
+                    <a class="nav-link text-white" onclick="logout()"><i class="bi bi-box-arrow-left"></i>
+                    </a>
+                  </li> 
+                  {% endif %}
+              </div>
+            </div>
+          </nav>
+    </header>
+
+    <main style="background-color: rgb(245,242,236); min-height: 100vh; display: flex; flex-direction: column;">
+        <div class="container flex-grow-1">
+            <div class="row">
+                <div class="col">
+                    {% block content %}
+                    {% endblock content %}
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-body-tertiary text-center text-lg-start mt-auto">
+        <div class="text-center p-3 text=white" style="background-color: rgba(0, 0, 0, 0.35);">
+          <p>
+            نظام مخزوني يساعدك في تتبع استهلاك المنتجات 
+
+          </p>
+        </div>
+    </footer>
+
+    <script src="{% static 'js/main.js' %}"></script>
+    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+</body>
+</html>
