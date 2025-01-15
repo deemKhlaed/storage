@@ -80,15 +80,6 @@ WSGI_APPLICATION = 'storeproject.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'storage' ,
-        'USER': 'root',
-        'PASSWORD':'123456'
-        
-    }
-}
 
 
 # Password validation
