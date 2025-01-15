@@ -2,7 +2,6 @@ from django.db import models
 from django.contrib.auth.models import User
 # Create your models here.
 
-# Purpose: To store details about each ingredient.
 class Ingredients(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE ,default=1 ,verbose_name='User')  
     name = models.CharField( max_length=100)
@@ -41,7 +40,6 @@ class Recipes(models.Model):
     
 
 
-# Purpose: To link ingredients to recipes and specify amounts used.
 class RecipeIngredients(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE ,default=1,verbose_name='User')  
     RecipeID = models.ForeignKey( Recipes, on_delete=models.CASCADE)

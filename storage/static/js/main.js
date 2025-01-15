@@ -69,4 +69,24 @@ function logout() {
     $('#edit').modal('show')
 }
 
+function deleteIngredient(id){
+    if (confirm(" هل انت متأكد تريد حذف المكون")) {
+        $.ajax({
+       headers: 
+       { "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content") },
+       url: '/deleteI/',
+       type: 'POST',
+       data:{id:id},
+      
+       success: function(response) {
+       alert('Recipe deleted successfully!');
+
+                           },
+       error: function(xhr, errmsg, err) {
+       alert('An error occurred while deleting the Recipe.');
+       }
+       });
+       }
+}
+
    

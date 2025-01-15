@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block content %}
+ <div class="containr ">
+    {%for key,value in Ingredients.items %}
+    <div class="row mt-4">
+        <div class="col d-flex justify-content-center">
+            <div class="card " style="background-color: 	rgb(193,222,207);  width: 58rem; ">
+                <div class="card-body ">
+                   <h2> {{ key }}</h2>
+                   <table class="table">
+                    <thead>
+                        <td>اسم المنتج</td>
+                        <td>الكمية</td>
+                        <td>وحدة القياس</td>
+                        <td></td>
+                    </thead>
+                   {%for i in value %}
+                  <tbody>
+                    <td>{{i.name}}</td>
+                    <td>{{i.ingredients_size}}</td>
+                    <td>{{i.UnitOfMeasure}}</td>
+                    <td> <a href="#" onclick="deleteIngredient({{i.id}})"><i class="bi bi-trash text-white"></i></a></i>                      
+                    </td>
+                  </tbody>
+                  
+                    
+                    {% endfor %}
+                </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+ </div>  
+
+{% endblock content %}
+    

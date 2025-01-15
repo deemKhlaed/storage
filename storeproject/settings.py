@@ -39,7 +39,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'storage',
-    'bootstrap5'
+    'bootstrap5',
+    'orderingapp',
+    'rest_framework',
+    'api'
 
 ]
 

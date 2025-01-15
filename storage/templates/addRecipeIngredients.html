@@ -10,15 +10,16 @@
                         <div class="container">
                             <div class="row">
                                 <div class="col">
-                                    <form action="" method="post" enctype="multipart/form-data">
+                                    <table>
+                                        <thead>
+                                            <td class="p-2">المكون</td>
+                                            <td class="p-2">الكمية</td>
+                                        </thead>
+                                    <form action="" method="post" enctype="multipart/form-data" id="one">
                                         {% csrf_token %}
                                         {{ formset.management_form }}
                                                 
-                                                <table>
-                                                    <thead>
-                                                        <td class="p-2">المكون</td>
-                                                        <td class="p-2">الكمية</td>
-                                                    </thead>
+                                               
                                                     
                                                     {% for form in formset %}   
                                                     {{form.errors}}  
@@ -30,10 +31,13 @@
 
                                                 </table>
                                          <div class="text-start">
-                                            <button type="submit" class="btn btn-success text-end">حفظ</button>
+                                            <input type="hidden" name="Save">
+                                            <button type="submit" class="btn btn-success text-end" >حفظ</button>
+                                            
 
                                          </div>       
                                     </form>
+                                    <a class="btn "  style="background-color: 	rgb(208,199,182); " href="{% url 'add_ingredient' %}?next={{ request.path|urlencode }}">اضافه منتج جديده</a>
 
                                 </div>
                             </div>
@@ -42,16 +46,9 @@
         </div> 
     </div>
 </div>
-<script>
-    const addMorebtn = document.getElementById('add-more')
-    addMorebtn.addEventListener('click',)
-    function addnewform(event){
-        if(event){
-            event.preventDefault()
-        }
-        const emptyForm = document.getElementById('add-more')
-        emptyForm.setAttribute('class','ingradent-form')
 
-    }
-</script>
+
+
+
+
 {% endblock content %}

@@ -70,7 +70,7 @@ def index(request):
         fIngredientsForm = IngredientsForm(request.POST)
         if fIngredientsForm.is_valid():
             ingredient = fIngredientsForm.save(commit=False)
-            ingredient.user = request.user  # Add user here
+            ingredient.user = request.user  
             ingredient.save()
             return redirect('/')
     
@@ -92,7 +92,7 @@ def create_recipe(request):
         fRecipesForm = RecipesForm(request.POST ,request.FILES)
         if fRecipesForm.is_valid():
             recipe = fRecipesForm.save(commit=False)
-            recipe.user = request.user  # Add user here
+            recipe.user = request.user  
             recipe.save()
             return redirect('addRecipeIngredients', id=recipe.id)
     else:
@@ -110,21 +110,37 @@ def addRecipeIngredients(request, id):
     recipe_instance = get_object_or_404(Recipes, pk=id)
     RecipeIngredientsFormSet = modelformset_factory(RecipeIngredients, form=RecipeIngredientsForm, extra=5)
 
-    if request.method == 'POST':
+    if request.method == 'POST':  
         formset = RecipeIngredientsFormSet(request.POST ,form_kwargs={'user': request.user})
-        if formset.is_valid():
-            for form in formset:
-                ingredient = form.save(commit=False)
-                ingredient.RecipeID = recipe_instance
-                ingredient.user = request.user 
-                ingredient.save()
-            return redirect('recipes')
+        if 'Save' in request.POST:
+             if formset.is_valid():
+                 for form in formset:
+                  ingredient = form.save(commit=False)
+                  ingredient.RecipeID = recipe_instance
+                  ingredient.user = request.user 
+                  ingredient.save()
+                 return redirect('recipes')
+        
     else:
         formset = RecipeIngredientsFormSet(queryset=RecipeIngredients.objects.none(),form_kwargs={'user': request.user})
 
     template = loader.get_template('addRecipeIngredients.html')
-    return HttpResponse(template.render({'formset': formset, 'request': request, 'Recipenme': recipe_instance.necipes_name}))
+    return HttpResponse(template.render({'formset': formset, 'request': request, 'Recipenme': recipe_instance.necipes_name,}))
 
+@login_required(login_url="/login/")
+@csrf_exempt
+def add_ingredient(request):
+    addIngredientsForm = IngredientsForm(request.POST)
+    if addIngredientsForm.is_valid():
+             newingredient = addIngredientsForm.save(commit=False)
+             newingredient.user = request.user  
+             newingredient.save()
+             next_url = request.GET.get("next")
+             return redirect(next_url)
+            
+    else:
+        addIngredientsForm = IngredientsForm(request.POST)
+    return render(request, 'add_ingredient.html', {'form': addIngredientsForm})             
 
 @login_required(login_url="/login/")
 @csrf_exempt
@@ -132,24 +148,24 @@ def purchase_ingredient(request):
     if request.method == 'POST':
         form = PurchasesForm(request.POST , user=request.user )
         if form.is_valid():
-            # Save the purchase data
+            
             purchase = form.save(commit=False)
-            purchase.user = request.user  # Add user here
+            purchase.user = request.user 
             purchase.save()
 
-            # Get or create the corresponding Inventory record
+           
             updateStock, created = stock.objects.get_or_create(
                 IngredientID=purchase.IngredientID,
-                defaults={'Quantity': 0, 'user': request.user}  # Add user here
+                defaults={'Quantity': 0, 'user': request.user} 
             )
+
             
-            # Update the inventory quantity
-            updateStock.Quantity += purchase.Quantity
+            updateStock.Quantity += purchase.Quantity * purchase.IngredientID.ingredients_size
             updateStock.save()
             messages.success(request,  'تم اضافة '+ (purchase.IngredientID.name) +' بنجاح ' )
 
-            # Redirect to a success page or return a response
-            return redirect('/purchase/')  # Replace 'success_url' with your actual success URL
+           
+            return redirect('/purchase/')  
     else:
         form = PurchasesForm(user=request.user)
 
@@ -168,6 +184,24 @@ def displayRecipe(request):
         })
     template = loader.get_template('display_resipe.html')
     return HttpResponse(template.render({'request': request, 'recipe_details': recipe_details}))
+
+@login_required(login_url="/login/")
+def displayIngredient(request):
+    ingredients = Ingredients.objects.filter(user=request.user) 
+    categortSet = set([item.Category for item in ingredients])
+    
+    ingredients_d ={}
+    
+    for category in categortSet:
+        lis =[]
+        for item in ingredients:
+            if category == item.Category:
+                lis.append(item)
+        ingredients_d[category] = lis
+        
+    
+    template = loader.get_template('dispaly_ingredient.html')
+    return HttpResponse(template.render({'request': request, 'Ingredients': ingredients_d,'categortSet':categortSet}))
 
 @login_required(login_url="/login/")
 @csrf_exempt
@@ -197,17 +231,19 @@ def deleteRecipe(request):
     recipe.delete()
     return redirect('/recipes/') 
 
+@login_required(login_url="/login/")
+@csrf_exempt
+def deleteIngredient(request):
+    ingredients = Ingredients.objects.get(id=request.POST.get('id'))
+    ingredients.delete()
+    return redirect('/display_ingredient/') 
+
 
 
 @login_required(login_url="/login/")
 def updateStock(request):
     # 
-    orders = [
-        {
-    'recipes_name':'برقر',
-    'Qty':1
-     }
-    ]
+    orders = []
     for order in orders:
         getRecipe = Recipes.objects.get(necipes_name = order['recipes_name'] ,user=request.user)
         ingredients = RecipeIngredients.objects.filter(RecipeID=getRecipe, user=request.user)  
